@@ -17,6 +17,7 @@ var btnEl = $(".btn")
 var inputEl = $(".form-control")
 var formEl = $(".input-group")
 var currentTime = moment().format("dddd,MMM Do");
+var containerEl = $("#mominput")
 headerTimeEl.text(currentTime);
 var hours = $(".hour").text();
 var now = moment();
@@ -26,7 +27,7 @@ function checkState() {
     $(".hour").each(function(){
         var hour = this.id.split("hour")[1];
         //console.log(moment().format("H"))
-        console.log(moment(hour,"H").format("ha"))
+        //console.log(moment(hour,"H").format("ha"))
         
         if (moment(hour, "ha").isBefore(now, "h")) {
             $(this).siblings(0).addClass("past")
@@ -36,165 +37,41 @@ function checkState() {
             $(this).siblings(0).addClass("future")
         }
     })
-/*
-    if (moment("9am", "ha").isBefore(now, "h")) {
-        inputEl[0].classList.add("past")
-    } else if (moment("9am", "ha").isSame(now, "h")) {
-        inputEl[0].classList.add("present")
-    } else {
-        inputEl[0].classList.add("future")
-    }
-    if (moment("10am", "ha").isBefore(now, "h")) {
-        inputEl[1].classList.add("past")
-    } else if (moment("10am", "ha").isSame(now, "h")) {
-        inputEl[1].classList.add("present")
-    } else {
-        inputEl[1].classList.add("future")
-    }
-    if (moment("11am", "ha").isBefore(now, "h")) {
-        inputEl[2].classList.add("past")
-    } else if (moment("11am", "ha").isSame(now, "h")) {
-        inputEl[2].classList.add("present")
-    } else {
-        inputEl[2].classList.add("future")
-    }
-    if (moment("12pm", "ha").isBefore(now, "h")) {
-        inputEl[3].classList.add("past")
-    } else if (moment("12pm", "ha").isSame(now, "h")) {
-        inputEl[3].classList.add("present")
-    } else {
-        inputEl[3].classList.add("future")
-    }
-    if (moment("1pm", "ha").isBefore(now, "h")) {
-        inputEl[4].classList.add("past")
-    } else if (moment("1pm", "ha").isSame(now, "h")) {
-        inputEl[4].classList.add("present")
-    } else {
-        inputEl[4].classList.add("future")
-    }
-    if (moment("2pm", "ha").isBefore(now, "h")) {
-        inputEl[5].classList.add("past")
-    } else if (moment("2pm", "ha").isSame(now, "h")) {
-        inputEl[5].classList.add("present")
-    } else {
-        inputEl[5].classList.add("future")
-    }
-    if (moment("3pm", "ha").isBefore(now, "h")) {
-        inputEl[6].classList.add("past")
-    } else if (moment("3pm", "ha").isSame(now, "h")) {
-        inputEl[6].classList.add("present")
-    } else {
-        inputEl[6].classList.add("future")
-    }
-    if (moment("4pm", "ha").isBefore(now, "h")) {
-        inputEl[7].classList.add("past")
-    } else if (moment("4pm", "ha").isSame(now, "h")) {
-        inputEl[7].classList.add("present")
-    } else {
-        inputEl[7].classList.add("future")
-    }
-    if (moment("5pm", "ha").isBefore(now, "h")) {
-        inputEl[8].classList.add("past")
-    } else if (moment("5pm", "ha").isSame(now, "h")) {
-        inputEl[8].classList.add("present")
-    } else {
-        inputEl[8].classList.add("future")
-    }
-
-*/
 };
 
-checkState()
-
-
-var data = []
-function storeData() {
-    var plan = $("input[type=text]").val()
-    return plan
-    data.push(plan)
-    localStorage.setItem("data", data);
-}
+checkState();
 
 
 
-var allPlans ={
-    
-    location: inputEl
-    //dayPlan:
-}
-console.log(inputEl)
+function submitHandler(event){
+    event.preventDefault();
+    var plan=[];
 
-$("#mominput").on("click", ".btn", function () {
-    storeData()
-});
-
-function display(){
-    if (localStorage.data) {
-        var schedule = localStorage.getItem("data")
-        
-    }
-    
-}
-
-//////????? need to loop throgh the input forms.
-
-
-
-
-
-
-//set colors. if moment > hour
-/*
-for(var i=0; i<12; i++){
-    var hour = hours.split(" ")[i]
-    console.log(hour)
-    if(now===hour){
-        console.log("now")
-    }
-    if(now>hour){
-        console.log("past")
-    }
-    if(now<hour){
-        console.log('future')
-
-    }
+    inputEl.each(function(){
+       var input = $(this).val()
+       plan.push(input)
+    })
+       
+       localStorage.setItem("Plan",JSON.stringify(plan))
 };
 
 
 
 
+containerEl.on("click", ".btn", submitHandler);
 
 
 
+window.onload = function(){
+    var schedule = JSON.parse(localStorage.getItem("Plan"))
+    for(var i=0; i<8; i++){
+        //inputEl.val(schedule)
+        console.log(schedule[i])
+        var afterReload = inputEl[i]
+        //console.log(put)
+        afterReload.value = schedule[i]
+  }
 
+ }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//var plan = inputEl.value;
-//localStorage.setItem("Plan", data);
-//$("form-control").
-
-
-/*
-for(var i=0; i<12; i++){
-
-    var workHour = moment("9","h").add(i, "h")
-    $(".input-group-text")[i].text("22")
-    //item.text(workHour)
-    //console.log($(".input-group-text")[i])
-};
-*/
-
+ 
